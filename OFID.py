@@ -2,6 +2,28 @@ import os
 import glob
 import shutil
 
+
+# CREATE A BANNER FOR THE TOOL 
+def ofid_banner():
+    print(r"""
+
+    ===============
+
+    WELCOME TO OFID! Order Your Files Correctlly!
+
+  ___  _____ ___ ____  
+ / _ \|  ___|_ _|  _ \ 
+| | | | |_   | || | | |
+| |_| |  _|  | || |_| |
+ \___/|_|   |___|____/ 
+    
+
+    Copyrights © 2024 All Rights Reserved by $SecDev_Zakaria
+
+   =============== 
+    """)
+ofid_banner()
+
 # LOOP UNTIL THE USER PROVIDES A VALID PATH
 while True:
     pathA = input("Please enter the full path of the folder you want to organize: ")

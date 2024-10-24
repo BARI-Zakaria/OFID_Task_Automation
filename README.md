@@ -29,7 +29,7 @@
 
 ![OFID Banner](Images/3.png)
 
-✅ Done! Your files have been successfully organized by extension.
+✅ Done! Your files have been successfully organized by their extensions.
 
 ![OFID Banner](Images/4.png)
 

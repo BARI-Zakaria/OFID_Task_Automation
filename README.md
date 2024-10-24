@@ -12,12 +12,12 @@
 
 1. Download the script 
 
-2. Choose the directorie where you will place it.
+2. Choose the directory where you will place it.
 
 3. Open **PowerShell**.
 
 
-4. Change Directorie to the folder where the scipt existe : ***cd*** *C:\<folder-path>*.
+4. Change Directorie to the folder where the script exist : ***cd*** *C:\<folder-path>*.
 
 ![OFID Banner](Images/1.png)
 

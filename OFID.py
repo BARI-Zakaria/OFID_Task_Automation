@@ -57,6 +57,13 @@ def order_by_extension():
                     sourcePath = os.path.join(dirpath, exten)  # Get the source file path
                     shutil.move(sourcePath, os.path.join(direcName, exten))  # Move the file to the new directory
 
-    print("Files have been successfully organized by extension.")
+    print(r"""
+
+    ===============
+
+    Files have been successfully organized by extension.
+
+    ===============
+    """)
 
 order_by_extension()

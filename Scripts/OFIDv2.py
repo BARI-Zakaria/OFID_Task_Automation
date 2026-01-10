@@ -8,20 +8,38 @@ from tkinter import ttk, filedialog, messagebox
 
 
 # ======================
-# ICON CONFIGURATION
+# ICON CONFIGURATION + FIXED FOR TASKBAR
 # ======================
 def set_window_icon(root):
     try:
-        # Change this path to your icon file location
-        icon_path = os.path.join(os.path.dirname(__file__), "Images", "hacker.ico")
+        # Get the script directory
+        script_dir = os.path.dirname(os.path.abspath(__file__))
+        
+        # Go up one level from Scripts folder to find Images folder
+        project_root = os.path.dirname(script_dir)
+        icon_path = os.path.join(project_root, "Images", "hacker.ico")
         
         if os.path.exists(icon_path):
             root.iconbitmap(icon_path)
-        else:
-            # Fallback to default icon if custom icon not found
-            root.iconbitmap(default='')  # This clears any default icon
+            if os.name == 'nt':  # Windows
+                try:
+                    import ctypes
+                    myappid = 'zakaria.ofidv2.1.0'  # Arbitrary string
+                    ctypes.windll.shell32.SetCurrentProcessExplicitAppUserModelID(myappid)
+                    # print("Windows AppUserModelID set")
+                except Exception as e:
+                    print(f"Could not set AppUserModelID: {e}")
+            
+            # print("Icon loaded successfully!")
+            return True
+        else:            
+            print("No icon found anywhere")
+            return False
+            
     except Exception as e:
-        print(f"Icon error: {str(e)}")  # Fails silently if icon can't be loaded
+        print(f"Icon error: {str(e)}")
+        return False
+
 
 # ======================
 # DARK THEME CONFIGURATION
@@ -57,6 +75,7 @@ def configure_dark_theme(root):
         background=[('active', '#555555')]
     )
 
+
 # ======================
 # FILE ORGANIZATION LOGIC
 # ======================
@@ -84,6 +103,7 @@ def organize_files(path):
     except Exception as e:
         messagebox.showerror("Error", f"Organization failed:\n{str(e)}")
         return False
+
 
 def undo_organization(path):
     """Undoes previous organization"""
@@ -118,19 +138,23 @@ def undo_organization(path):
         messagebox.showerror("Error", f"Undo failed:\n{str(e)}")
         return False
 
+
 # ======================
 # MAIN APPLICATION GUI
 # ======================
 class OFIDApp:
     def __init__(self, root):
         self.root = root
-        set_window_icon(root)  # Set custom icon
         self.setup_ui()
         
     def setup_ui(self):
         self.root.title("OFIDv2")
-        self.root.geometry("500x300")
+        self.root.geometry("600x300")
         configure_dark_theme(self.root)
+        
+        # Set icon AFTER creating window but BEFORE mainloop
+        # This order is important for taskbar icon
+        set_window_icon(self.root)
         
         # Main container
         main_frame = ttk.Frame(self.root)
@@ -225,15 +249,15 @@ class OFIDApp:
         ).pack(side=tk.LEFT)
         
         # Clickable LinkedIn link
-        github_link = ttk.Label(
+        linkedin_link = ttk.Label(
             copyright_frame,
             text="LinkedIn",
             font=("Helvetica", 8, "underline"),
             foreground="#0A66C2",  # LinkedIn blue
             cursor="hand2"
         )
-        github_link.pack(side=tk.LEFT)
-        github_link.bind("<Button-1>", lambda e: webbrowser.open("https://www.linkedin.com/in/zakaria-bari/"))
+        linkedin_link.pack(side=tk.LEFT)
+        linkedin_link.bind("<Button-1>", lambda e: webbrowser.open("https://www.linkedin.com/in/zakaria-bari/"))
 
     def browse_folder(self):
         folder = filedialog.askdirectory()
@@ -267,7 +291,29 @@ class OFIDApp:
         if undo_organization(path):
             messagebox.showinfo("Success", "Organization undone successfully!")
 
+
+# ======================
+# WINDOWS TASKBAR FIX
+# ======================
+def set_windows_taskbar_icon():
+    if os.name == 'nt':  # Windows only
+        try:
+            import ctypes
+            # Create a unique AppUserModelID for your app
+            app_id = 'zakaria.bari.ofidv2.2.0'
+            ctypes.windll.shell32.SetCurrentProcessExplicitAppUserModelID(app_id)
+            return True
+        except Exception as e:
+            print(f"Windows AppUserModelID error: {e}")
+            return False
+# ======================
+
+
 if __name__ == "__main__":
+    # Set Windows taskbar icon fix BEFORE creating Tk window
+    set_windows_taskbar_icon()
+    
+    # Create and run the application
     root = tk.Tk()
     app = OFIDApp(root)
     root.mainloop()
